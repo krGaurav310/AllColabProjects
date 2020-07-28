@@ -1,0 +1,10 @@
+# let's inspect the number of observations per category
+
+X_train['FireplaceQu'].value_counts().sort_values(ascending=False).plot.bar() # This will give us the category with maximum no of values
+plt.xlabel('FireplaceQu')
+plt.ylabel('Number of houses')
+
+# Let's fill na in both train and test
+
+X_train['FireplaceQu'].fillna('Gd', inplace=True) #it will replace the missing categorial variable with the mode values
+X_test['FireplaceQu'].fillna('Gd', inplace=True)
