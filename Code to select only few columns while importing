@@ -1,0 +1,7 @@
+# let's load the dataset with a few columns for the demonstration
+
+# these are categorical columns and the target SalePrice
+cols_to_use = ['BsmtQual', 'FireplaceQu', 'SalePrice']
+
+data = pd.read_csv('../houseprice.csv', usecols=cols_to_use)
+data.head()
