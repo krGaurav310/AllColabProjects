@@ -1,0 +1,18 @@
+# calculate the IQR
+IQR = X_train['MasVnrArea'].quantile(0.75) - X_train['MasVnrArea'].quantile(
+    0.25)
+
+# calculate the upper boundary
+extreme_value = X_train['MasVnrArea'].quantile(0.75) + 3 * IQR
+
+extreme_value
+
+
+#calculate extream values
+# replace NA with the value calculated above
+
+X_train['Age_imputed'] = impute_na(X_train, 'age',
+                                   X_train.age.mean() + 3 * X_train.age.std())
+
+X_train.head(15)
+
