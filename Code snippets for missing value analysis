@@ -1,0 +1,83 @@
+1. # let's make a function to fill missing values with the mean or median:
+# the variable takes the dataframe, the variable, and the value of the
+# mean or median
+# and returns the variable with the filled na
+
+def impute_na(df, variable, mean_median):
+    
+    return df[variable].fillna(mean_median)
+    
+2.# calculate the median age
+
+median = X_train.Age.median()
+median
+
+3. # calculate the mean Age
+
+mean = X_train.Age.mean()
+mean
+
+
+4.# create a new variable with the missing values replaced # we will get two new columns which will show distribution after imputation by mean and median
+# using the function we created above
+
+# first replace with the median
+X_train['Age_median'] = impute_na(X_train, 'Age', median)
+
+# now replace with the mean
+X_train['Age_mean'] = impute_na(X_train, 'Age', mean)
+
+# the mean contains many decimals, so I round to 1
+# using the round function from numpy
+X_train['Age_mean'] = np.round(X_train['Age_mean'], 1)
+
+X_train.head(15)
+
+
+
+5.# we can see a change in the variance after mean / median imputation
+# this is expected, because the percentage of missing data is quite
+# high in Age, ~20%
+
+print('Original variable variance: ', X_train['Age'].var())
+print('Variance after median imputation: ', X_train['Age_median'].var())
+print('Variance after mean imputation: ', X_train['Age_mean'].var())
+
+
+
+6. # we can see that the distribution has changed 
+# with now more values accumulating towards the median
+# or median
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+# original variable distribution
+X_train['Age'].plot(kind='kde', ax=ax)
+
+# variable imputed with the median
+X_train['Age_median'].plot(kind='kde', ax=ax, color='red')
+
+# variable imputed with the mean
+X_train['Age_mean'].plot(kind='kde', ax=ax, color='green')
+
+# add legends
+lines, labels = ax.get_legend_handles_labels()
+ax.legend(lines, labels, loc='best')
+
+
+7. X_train[["Fare", "Age","Age_median","Age_mean"]].cov()
+
+
+8. # Finally, I mentioned that mean / median imputation may lead 
+# to observations that are normal, to look like outliers
+
+# or in other words, mean / median imputation may lead to an increase
+# in the apparent number of  outliers
+
+# Let's find out using a boxplot
+X_train[['Age', 'Age_median', 'Age_mean']].boxplot()
+
+
+
+
