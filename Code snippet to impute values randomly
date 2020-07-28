@@ -1,0 +1,75 @@
+# let's impute Age by random sampling both in
+# train and test sets
+
+# create the new variable where NA will be imputed:
+# make a copy from the original variable, with NA
+
+
+1. X_train['Age_imputed'] = X_train['age'].copy()
+X_test['Age_imputed'] = X_test['age'].copy()
+
+
+# extract the random sample to fill the na:
+# remember we do this always from the train set, and we use
+# these to fill both train and test
+
+
+2. random_sample_train = X_train['age'].dropna().sample(
+    X_train['age'].isnull().sum(), random_state=0)
+
+
+3. random_sample_test = X_train['age'].dropna().sample(
+    X_test['age'].isnull().sum(), random_state=0)
+
+
+# what is all of the above code doing?
+
+# 1) dropna() removes the NA from the original variable, this
+# means that I will randomly extract existing values and not NAs
+
+# 2) sample() is the method that will do the random sampling
+
+# 3) X_train['Age'].isnull().sum() is the number of random values to extract
+# I want to extract as many values as NAs are present in the original variable
+
+# 4) random_state sets the seed for reproducibility, so that I extract 
+# always the same random values, every time I run this notebook
+
+# pandas needs to have the same index in order to merge datasets
+
+
+4.random_sample_train.index = X_train[X_train['age'].isnull()].index
+random_sample_test.index = X_test[X_test['age'].isnull()].index
+
+# replace the NA in the newly created variable
+
+
+5.X_train.loc[X_train['age'].isnull(), 'Age_imputed'] = random_sample_train
+X_test.loc[X_test['age'].isnull(), 'Age_imputed'] = random_sample_test
+
+
+6. # check that NA were imputed
+X_train['Age_imputed'].isnull().sum()
+
+
+7.# check that NA were imputed
+X_test['Age_imputed'].isnull().sum()
+
+
+8.X_train.head(15) # you will see randomly imputed results
+
+
+
+9. # cross check the distribution
+
+# we can see that the distribution of the variable after
+# random sample imputation is almost exactly the same as the original
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+X_train['age'].plot(kind='kde', ax=ax)
+X_train['Age_imputed'].plot(kind='kde', ax=ax, color='red')
+
+lines, labels = ax.get_legend_handles_labels()
+ax.legend(lines, labels, loc='best')
