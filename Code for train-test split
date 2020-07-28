@@ -1,0 +1,9 @@
+# let's separate into training and testing set
+
+X_train, X_test, y_train, y_test = train_test_split(
+    data[['age', 'fare']],  # predictors
+    data['survived'],  # target
+    test_size=0.3,  # percentage of obs in test set
+    random_state=0)  # seed to ensure reproducibility
+
+X_train.shape, X_test.shape
