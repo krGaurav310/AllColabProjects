@@ -1,0 +1,10 @@
+# let's plot the distribution of the target for the houses
+# that show the different categories of the variable
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+# add the legend
+lines, labels = ax.get_legend_handles_labels()
+labels = ['TA', 'Gd', 'Ex', 'Missing', 'Fa']
+ax.legend(lines, labels, loc='best')
