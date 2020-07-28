@@ -4,7 +4,16 @@
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
+# a plot per category
+X_train[X_train['FireplaceQu']=='Missing']['SalePrice'].plot(kind='kde', ax=ax)
+X_train[X_train['FireplaceQu']=='Gd']['SalePrice'].plot(kind='kde', ax=ax)
+X_train[X_train['FireplaceQu']=='TA']['SalePrice'].plot(kind='kde', ax=ax)
+X_train[X_train['FireplaceQu']=='Fa']['SalePrice'].plot(kind='kde', ax=ax)
+X_train[X_train['FireplaceQu']=='Ex']['SalePrice'].plot(kind='kde', ax=ax)
+X_train[X_train['FireplaceQu']=='Po']['SalePrice'].plot(kind='kde', ax=ax)
+
+
 # add the legend
 lines, labels = ax.get_legend_handles_labels()
-labels = ['TA', 'Gd', 'Ex', 'Missing', 'Fa']
+labels = ['Missing','Gd', 'TA', 'Fa', 'Ex', 'Po']
 ax.legend(lines, labels, loc='best')
