@@ -1,0 +1,70 @@
+1. vars_with_na = [var for var in data.columns if data[var].isnull().mean() > 0] #This code will give you list of all the columns with null values
+vars_with_na
+
+2. data[vars_with_na].dtypes #it will give data types of those variables
+
+(This one is most important) 
+3. # let's find out the percentage of observations missing per variable
+
+# calculate the percentage of missing (as we did in section 3)
+# using the isnull() and mean() methods from pandas
+data_na = data[vars_with_na].isnull().mean()
+
+# transform the array into a dataframe
+data_na = pd.DataFrame(data_na.reset_index())
+
+# add column names to the dataframe
+data_na.columns = ['variable', 'na_percentage']
+
+# order the dataframe according to percentage of na per variable
+data_na.sort_values(by='na_percentage', ascending=False, inplace=True)
+
+# show
+data_na
+
+4.# capture variables with no or less than 5% NA
+
+vars_cca = [var for var in data.columns if data[var].isnull().mean() < 0.05]
+vars_cca
+
+5. # create the complete case dataset
+# in other words, remove observations with na in any variable
+
+data_cca = data[vars_cca].dropna()
+data.shape, data_cca.shape
+
+6.# plot the histograms for all numerival variables in the complete
+# case dataset (as we did in section 3)
+
+data_cca.hist(bins=50, density=True, figsize=(12, 12))
+plt.show()
+
+7. # the following function captures the percentage of observations
+# for each category in the original and complete case dataset
+# and puts them together in a new dataframe
+
+
+def categorical_distribution(df, df_cca, variable):
+    tmp = pd.concat(
+        [
+            # percentage of observations per category, original data
+            df[variable].value_counts() / len(df),
+
+            # percentage of observations per category, cca data
+            df_cca[variable].value_counts() / len(df_cca)
+        ],
+        axis=1)
+
+    # add column names
+    tmp.columns = ['original', 'cca']
+
+    return tmp
+    
+ # run the function in each categorical variable
+categorical_distribution(data, data_cca, 'BsmtQual')
+categorical_distribution(data, data_cca, 'MasVnrType')
+categorical_distribution(data, data_cca, 'SaleCondition')
+
+
+
+
